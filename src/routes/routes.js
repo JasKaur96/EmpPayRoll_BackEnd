@@ -2,14 +2,22 @@ const express = require('express');
 const router = express.Router();
 const empController = require("../controller/empController")
 
-router.post('/register',empController.registration);
+const loginController = require("../controller/loginController");
+const verify = require('../middleware/jwt');
 
-router.get("/register", empController.findAllEmp);
+router.post('/register',verify.verifyToken,empController.registration);
 
-router.delete("/register/:id",empController.deleteEmpId);
+router.get("/findAll",verify.verifyToken, empController.findAllEmp);
 
-router.put("/register/:id", empController.updateEmp);
+router.delete("/deleteEmp/:id",verify.verifyToken,empController.deleteEmpId);
 
-router.get("/register/:id", empController.findOneEmp);
+router.put("/updateEmp/:id", verify.verifyToken,empController.updateEmp);
+
+router.get("/findOne/:id",verify.verifyToken, empController.findOneEmp);
+
+router.post('/createlogin',loginController.createLogin); //add to bck
+
+router.post('/login',loginController.userLogin); // check user exist
+
 
 module.exports = router

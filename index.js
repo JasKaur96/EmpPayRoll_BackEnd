@@ -22,11 +22,6 @@ app.use(expressValidator())
 app.use(cors())
 app.use('',router)
 
-// app.use(bodyParser.urlencoded());
-// app.get("/register",(req,res)=>{
-//     res.status(200).send("server running")
-// })
-
 const client = mongoose.connect(url, {
     useNewUrlParser:true,
     useUnifiedTopology:true,

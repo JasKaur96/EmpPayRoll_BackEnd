@@ -9,15 +9,14 @@ const empSchema = new mongoose.Schema({
         maxLength: 30
     },
     _profile_image:{
-        type:String,
-        required:true,
+        type:String
     },
     _gender:{
         type: String,
         required:true
     },
     _department:{
-        type:String,
+        type: Object,
         required: true
     },
     _salary:{
@@ -25,17 +24,21 @@ const empSchema = new mongoose.Schema({
         required: true
     },
     _startDate:{ 
-        type : Date
+        type : String
     },
 
-    // _phone:{
-    //     type:Number,
-    //     min:10,
-    //     require:true,
-    // },
     _notes:{
         type:String,
         // required:true
+    },
+    _phoneNo:{
+        type:String,
+        required: [true,"User Number is required."],
+        maxLength: 30
+    },
+    _password:{
+        type:String,
+        required: [true,"Password is required."]
     }
 })
 
@@ -45,19 +48,29 @@ const empModel = new mongoose.model('Employee', empSchema);
 function empOperation(){}
 
 empOperation.prototype.register = (obj, callback) => {
+    console.log("In MOdel",obj)
     empModel.find({_name: obj._name},(error,data) => {
         if(error){
+            console.log("Inside if ",obj)
             callback(error, null)  //data will be null
         }
         else{
+            console.log("Inside else ",obj)
             if(data.length >0){
+                // console.log("Inside else....if",obj)
                 callback({success: false, message:"Name already exists", data:""})
             }else{
+                console.log("Inside else....else ",obj)
                 var newEmp = new empModel(obj)
                 newEmp.save((err,data) => {
+                    console.log("Inside newEmp Save ",obj)
                     if(err){
+                       console.log("Inside Model error ",err)
+                       
                        callback(err,null);
+
                     }else{
+                        console.log("Inside Model data save ",obj)
                         var response = {success: true, message:"Emp registered successful", data: ""};
                         callback(null,response);
                     }
@@ -92,11 +105,15 @@ empOperation.prototype.deleteEmp =((obj,callback) =>{
 })
 
 empOperation.prototype.updateEmp = ((id,data,callback) =>{
-    
+    console.log("Id = ",id,"  data : ",data)
+    let newData = JSON.stringify(data);
+    console.log("Newdata : ",newData)
     empModel.findByIdAndUpdate(id,data,{new:true},(error,result) => {
         if (error){
+            console.log("error in Model", error)
             callback(error ,null);
           }else {
+            console.log("result in Model", result)
             callback(null ,result);
           }
       });

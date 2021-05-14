@@ -41,7 +41,6 @@ exports.findAndUpdateEmp = (id,data,callback) =>{
     })
 }
 
-
 exports.findEmp = (data,callback) =>{
     empOpr.findEmpById(data,(error,result) =>{
         if(error){
@@ -51,3 +50,14 @@ exports.findEmp = (data,callback) =>{
         }
     })
 }
+
+
+// exports.findUserName = (data,callback) =>{
+//     (data,(error,result) =>{
+//         if(error){
+//             callback(error,null)
+//         }else{
+//             callback(null, result)
+//         }
+//     })
+// }
